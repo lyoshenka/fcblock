@@ -52,52 +52,49 @@ function blockFeed() {
 }
 
 function blockMainFeed() {
-  // Common selectors for feed content on Farcaster
-  const feedSelectors = [
-    '[data-testid="feed"]',
-    '[data-testid="home-feed"]',
-    '.feed',
-    '.home-feed',
-    '[role="main"]',
-    'main',
-    // More specific selectors for Farcaster's structure
-    'div[class*="feed"]',
-    'div[class*="timeline"]',
-    'div[class*="posts"]'
-  ];
-
-  // Try to find the feed container
-  let feedContainer = null;
+  // Look for any nav element that contains both "Home" and "Following" text
+  const allNavs = document.querySelectorAll('nav');
+  let homeNav = null;
   
-  for (const selector of feedSelectors) {
-    feedContainer = document.querySelector(selector);
-    if (feedContainer) {
-      console.log('Found feed container with selector:', selector);
+  for (const nav of allNavs) {
+    const navText = nav.textContent || '';
+    if (navText.includes('Home') && navText.includes('Following')) {
+      homeNav = nav;
+      console.log('Found home feed nav element with Home and Following');
       break;
     }
   }
-
-  // If we can't find a specific feed container, look for the main content area
-  if (!feedContainer) {
-    // Look for the main content area that likely contains the feed
-    const mainContent = document.querySelector('main') || 
-                       document.querySelector('[role="main"]') ||
-                       document.querySelector('div[class*="main"]') ||
-                       document.querySelector('div[class*="content"]');
-    
-    if (mainContent) {
-      feedContainer = mainContent;
-      console.log('Using main content area as feed container');
-    }
+  
+  if (!homeNav) {
+    console.log('No nav with Home and Following found - not on home feed page');
+    return;
   }
 
-  if (feedContainer && !feedContainer.querySelector('.farcaster-feed-blocked')) {
-    // Store original content if we haven't already
-    if (!originalContent) {
-      originalContent = feedContainer.innerHTML;
+  // Get the parent container of the nav
+  const navParent = homeNav.parentElement;
+  if (!navParent) {
+    console.log('No nav parent found');
+    return;
+  }
+
+  // Hide all sibling divs of the nav (but not the nav itself)
+  const siblings = Array.from(navParent.children);
+  let hiddenCount = 0;
+  
+  siblings.forEach(sibling => {
+    if (sibling !== homeNav && sibling.tagName.toLowerCase() === 'div') {
+      // Check if we already blocked this element
+      if (!sibling.classList.contains('farcaster-feed-blocked') && 
+          !sibling.hasAttribute('data-fc-block-hidden')) {
+        sibling.style.display = 'none';
+        sibling.setAttribute('data-fc-block-hidden', 'true');
+        hiddenCount++;
+      }
     }
-    
-    // Create the replacement message
+  });
+
+  // Add our blocking message if we haven't already
+  if (!navParent.querySelector('.farcaster-feed-blocked')) {
     const blockedMessage = document.createElement('div');
     blockedMessage.className = 'farcaster-feed-blocked';
     blockedMessage.innerHTML = `
@@ -106,13 +103,10 @@ function blockMainFeed() {
         <p>The Farcaster feed has been blocked by FC Block extension.</p>
       </div>
     `;
-
-    // Replace the feed content
-    feedContainer.innerHTML = '';
-    feedContainer.appendChild(blockedMessage);
-    
-    console.log('Farcaster feed has been blocked and replaced');
+    navParent.appendChild(blockedMessage);
   }
+
+  console.log(`Hidden ${hiddenCount} sibling divs of home nav`);
 }
 
 function hideNotificationCounts() {
@@ -166,6 +160,13 @@ function unblockFeed() {
     console.log('Farcaster feed has been unblocked');
   }
   
+  // Show previously hidden sibling divs
+  const hiddenElements = document.querySelectorAll('[data-fc-block-hidden="true"]');
+  hiddenElements.forEach(element => {
+    element.style.display = '';
+    element.removeAttribute('data-fc-block-hidden');
+  });
+  
   // Show previously hidden notification elements
   const hiddenNotifications = document.querySelectorAll('[data-fc-block-notification-hidden="true"]');
   hiddenNotifications.forEach(element => {
@@ -173,14 +174,7 @@ function unblockFeed() {
     element.removeAttribute('data-fc-block-notification-hidden');
   });
   
-  // Clear the original content cache so the page can load normally
-  originalContent = null;
-  
-  // For better user experience, reload the page to restore original content
-  // This ensures the feed loads properly
-  setTimeout(() => {
-    location.reload();
-  }, 100);
+  console.log('All blocked elements have been restored');
 }
 
 // Observer to handle dynamic content loading
