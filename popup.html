@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <style>
+        body {
+            width: 250px;
+            height: 120px;
+            margin: 0;
+            padding: 20px;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background-color: #ffffff;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .header h3 {
+            margin: 0;
+            font-size: 16px;
+            color: #333;
+            font-weight: 600;
+        }
+
+        .toggle-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+        }
+
+        .toggle-label {
+            font-size: 14px;
+            color: #666;
+        }
+
+        .toggle-switch {
+            position: relative;
+            width: 48px;
+            height: 24px;
+            background-color: #ccc;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .toggle-switch.active {
+            background-color: #6366f1;
+        }
+
+        .toggle-slider {
+            position: absolute;
+            top: 2px;
+            left: 2px;
+            width: 20px;
+            height: 20px;
+            background-color: white;
+            border-radius: 50%;
+            transition: transform 0.3s;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+        }
+
+        .toggle-switch.active .toggle-slider {
+            transform: translateX(24px);
+        }
+
+        .status-text {
+            text-align: center;
+            margin-top: 15px;
+            font-size: 12px;
+            color: #888;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h3>FC Block</h3>
+    </div>
+    
+    <div class="toggle-container">
+        <span class="toggle-label">FC Block</span>
+        <div class="toggle-switch" id="toggle">
+            <div class="toggle-slider"></div>
+        </div>
+    </div>
+    
+    <div class="status-text" id="status">
+        Loading...
+    </div>
+
+    <script src="popup.js"></script>
+</body>
+</html>
