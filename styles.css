@@ -1,25 +1,37 @@
 /* Farcaster Feed Blocker Styles */
 
+/* Hide elements with data-fc-block-hide when fc-block-enabled class is on body */
+body.fc-block-enabled [data-fc-block-hide] {
+  display: none !important;
+}
+
+/* Show blocked message only when fc-block-enabled class is on body */
 .farcaster-feed-blocked {
   width: 100%;
   height: 400px;
-  display: flex;
+  min-height: 300px;
+  display: none;
   justify-content: center;
   align-items: center;
   background-color: #f8f9fa;
   border: 1px solid #e9ecef;
   border-radius: 8px;
   margin: 20px 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  box-sizing: border-box;
 }
 
-.blocked-content {
+body.fc-block-enabled .farcaster-feed-blocked {
+  display: flex !important;
+}
+
+.farcaster-feed-blocked div {
   text-align: center;
   padding: 40px;
   max-width: 400px;
 }
 
-.blocked-content h2 {
+.farcaster-feed-blocked h2 {
   color: #6c757d;
   font-size: 28px;
   font-weight: 300;
@@ -27,7 +39,7 @@
   letter-spacing: -0.5px;
 }
 
-.blocked-content p {
+.farcaster-feed-blocked p {
   color: #868e96;
   font-size: 14px;
   line-height: 1.5;
@@ -41,23 +53,12 @@
     background-color: #212529;
     border-color: #495057;
   }
-  
-  .blocked-content h2 {
+
+  .farcaster-feed-blocked h2 {
     color: #adb5bd;
   }
-  
-  .blocked-content p {
+
+  .farcaster-feed-blocked p {
     color: #6c757d;
   }
-}
-
-/* Ensure the blocked message takes full width and is prominent */
-.farcaster-feed-blocked {
-  min-height: 300px;
-  box-sizing: border-box;
-}
-
-/* Override any existing styles that might interfere */
-.farcaster-feed-blocked * {
-  box-sizing: border-box;
 }
