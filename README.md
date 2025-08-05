@@ -2,9 +2,13 @@
 
 A Chrome extension to block distracting parts of Farcaster. Works with both Chrome and Arc Browser.
 
-## Installation
+## What it does
 
-### Chrome/Arc Browser (Developer Mode)
+- Block the home feed
+- Block notifications page and unread counts
+
+
+## Install on Chrome/Arc Browser
 
 1. Clone or download this repository
 2. Open browser
@@ -12,11 +16,6 @@ A Chrome extension to block distracting parts of Farcaster. Works with both Chro
 4. Enable "Developer mode" in the top right corner
 5. Click "Load unpacked" and select the `fcblock` folder
 6. The extension will now be active on farcaster.xyz
-
-### What it does
-
-- Block the home feed
-- Block notifications page and unread counts
 
 ## Permissions
 
