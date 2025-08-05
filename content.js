@@ -124,7 +124,7 @@ function addBlockedMessageToMainFeed() {
     blockedMessage.innerHTML = `
       <div>
         <h2>Nothing to see here</h2>
-        <p>The Farcaster feed has been blocked by FC Block extension.</p>
+        <p>The Farcaster feed has been blocked by <a href="https://github.com/lyoshenka/fcblock">FC Block extension</a>.</p>
       </div>
     `;
     navParent.appendChild(blockedMessage);
