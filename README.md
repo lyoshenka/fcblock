@@ -15,16 +15,8 @@ A Chrome extension to block distracting parts of Farcaster. Works with both Chro
 
 ### What it does
 
-- Detects the home feed on farcaster.xyz
-- Replaces it with a clean message saying "Nothing to see here"
-- Works with dynamic content loading
-- Supports both light and dark modes
-
-## Files
-
-- `manifest.json` - Extension configuration
-- `content.js` - Main script that blocks the feed
-- `styles.css` - Styling for the replacement message
+- Block the home feed
+- Block notifications page and unread counts
 
 ## Permissions
 
