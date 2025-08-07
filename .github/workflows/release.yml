@@ -1,0 +1,29 @@
+name: Create Extension Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v4
+      
+    - name: Create zip
+      run: |
+        zip -r fc-block-extension.zip \
+          manifest.json \
+          content.js \
+          popup.html \
+          popup.js \
+          styles.css \
+          no.png
+        
+    - name: Create Release
+      uses: softprops/action-gh-release@v1
+      with:
+        files: fc-block-extension.zip
+        generate_release_notes: true

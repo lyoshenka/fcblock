@@ -8,7 +8,20 @@ A Chrome extension to block distracting parts of Farcaster. Works with both Chro
 - Block notifications page and unread counts
 
 
-## Install on Chrome/Arc Browser
+## Installation
+
+### Option 1: Install from GitHub Release
+
+1. Go to the [Releases page](https://github.com/lyoshenka/fcblock/releases)
+2. Download the latest `fc-block-extension.zip` file
+3. Extract the zip file to a folder on your computer
+4. Open Chrome or Arc Browser
+5. Navigate to `chrome://extensions/` (or `arc://extensions/` in Arc)
+6. Enable "Developer mode" in the top right corner
+7. Click "Load unpacked" and select the extracted folder
+8. The extension will now be active on farcaster.xyz
+
+### Option 2: Install from Source
 
 1. Clone or download this repository
 2. Open browser
