@@ -12,10 +12,10 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   // Update UI
   updateToggleState(isEnabled);
-  
+
   // Enable animations after initial load
   setTimeout(() => {
-    toggle.classList.add('animated');
+    toggle.classList.add("animated");
   }, 100);
 
   // Add click handler
@@ -38,7 +38,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       isCountingDown = true;
       toggle.style.opacity = "0.7";
 
-      let countdown = 3;
+      let countdown = 5;
 
       statusText.textContent = `Disabling in ${countdown}...`;
 
