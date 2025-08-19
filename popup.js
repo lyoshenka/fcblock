@@ -20,8 +20,15 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   // Add click handler
   toggle.addEventListener("click", async () => {
-    // Ignore clicks during countdown
-    if (isCountingDown) return;
+    // If counting down, cancel the countdown
+    if (isCountingDown) {
+      clearInterval(countdownTimer);
+      toggle.style.pointerEvents = "";
+      toggle.style.opacity = "";
+      isCountingDown = false;
+      statusText.textContent = "Enabled";
+      return;
+    }
 
     const currentState = toggle.classList.contains("active");
     const newState = !currentState;
@@ -29,7 +36,6 @@ document.addEventListener("DOMContentLoaded", async () => {
     // If disabling (going from true to false), show countdown
     if (currentState && !newState) {
       isCountingDown = true;
-      toggle.style.pointerEvents = "none";
       toggle.style.opacity = "0.7";
 
       let countdown = 3;
@@ -44,7 +50,6 @@ document.addEventListener("DOMContentLoaded", async () => {
         } else {
           statusText.textContent = `Disabled`;
           clearInterval(countdownTimer);
-          toggle.style.pointerEvents = "";
           toggle.style.opacity = "";
           isCountingDown = false;
 
