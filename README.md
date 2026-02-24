@@ -11,7 +11,7 @@ A Chrome extension to tweak your Farcaster experience. Works with Chrome, Arc, a
 
 ### From Chrome Web Store (Recommended)
 
-Coming soon!
+https://chromewebstore.google.com/detail/fc-tweak/kbponcgllocjppgoolliblbalfbmnjlo
 
 ### From GitHub Release
 
