@@ -14,9 +14,19 @@ jobs:
     steps:
     - uses: actions/checkout@v4
       
-    - name: Create zip
+    - name: Create Chrome zip
       run: |
         zip -r fc-tweak.zip \
+          manifest.json \
+          content.js \
+          popup.html \
+          popup.js \
+          styles.css \
+          icons/
+
+    - name: Create Firefox zip
+      run: |
+        zip -r fc-tweak-firefox.zip \
           manifest.json \
           content.js \
           popup.html \
@@ -27,5 +37,7 @@ jobs:
     - name: Create Release
       uses: softprops/action-gh-release@v1
       with:
-        files: fc-tweak.zip
+        files: |
+          fc-tweak.zip
+          fc-tweak-firefox.zip
         generate_release_notes: true

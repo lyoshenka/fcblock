@@ -1,5 +1,8 @@
 // Popup script for FC Tweak extension
 
+// Cross-browser namespace: Firefox exposes promise-based `browser`, Chrome uses `chrome`.
+const api = globalThis.browser ?? globalThis.chrome;
+
 document.addEventListener("DOMContentLoaded", async () => {
   const toggle = document.getElementById("toggle");
   const statusText = document.getElementById("status");
@@ -7,7 +10,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   let isCountingDown = false;
 
   // Load current state
-  const result = await chrome.storage.sync.get(["fcBlockEnabled"]);
+  const result = await api.storage.sync.get(["fcBlockEnabled"]);
   const isEnabled = result.fcBlockEnabled !== false; // Default to true
 
   // Update UI
@@ -65,34 +68,29 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   async function applyStateChange(newState) {
     // Save state
-    await chrome.storage.sync.set({ fcBlockEnabled: newState });
+    await api.storage.sync.set({ fcBlockEnabled: newState });
 
     // Update UI
     updateToggleState(newState);
 
     // Notify content script of state change
     try {
-      const [tab] = await chrome.tabs.query({
+      const [tab] = await api.tabs.query({
         active: true,
         currentWindow: true,
       });
       if (tab.url && tab.url.includes("farcaster.xyz")) {
-        chrome.tabs.sendMessage(
-          tab.id,
-          {
+        try {
+          const response = await api.tabs.sendMessage(tab.id, {
             action: "toggleBlock",
             enabled: newState,
-          },
-          (response) => {
-            if (chrome.runtime.lastError) {
-              console.log("Error sending message:", chrome.runtime.lastError);
-              // If content script isn't ready, reload the tab
-              chrome.tabs.reload(tab.id);
-            } else {
-              console.log("Message sent successfully:", response);
-            }
-          }
-        );
+          });
+          console.log("Message sent successfully:", response);
+        } catch (error) {
+          // Content script isn't ready — reload the tab so it re-injects.
+          console.log("Error sending message:", error);
+          api.tabs.reload(tab.id);
+        }
       }
     } catch (error) {
       console.log("Could not send message to content script:", error);
