@@ -1,10 +1,13 @@
 // FC Tweak Content Script
 
+// Cross-browser namespace: Firefox exposes promise-based `browser`, Chrome uses `chrome`.
+const api = globalThis.browser ?? globalThis.chrome;
+
 let isBlocking = true; // Default state
 let originalContent = null; // Store original content when blocking is disabled
 
 // Check initial state from storage
-chrome.storage.sync.get(["fcBlockEnabled"], (result) => {
+api.storage.sync.get(["fcBlockEnabled"]).then((result) => {
   isBlocking = result.fcBlockEnabled !== false; // Default to true
   if (isBlocking) {
     document.body.classList.add("fc-block-enabled");
@@ -13,7 +16,7 @@ chrome.storage.sync.get(["fcBlockEnabled"], (result) => {
 });
 
 // Listen for messages from popup
-chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
+api.runtime.onMessage.addListener((request, sender, sendResponse) => {
   if (request.action === "toggleBlock") {
     console.log("Received toggle message:", request.enabled);
     isBlocking = request.enabled;

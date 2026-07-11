@@ -4,6 +4,15 @@
   "version": "1.0.0",
   "description": "Tweak your Farcaster experience - block the feed and notifications to stay focused.",
   "permissions": ["activeTab", "storage"],
+  "browser_specific_settings": {
+    "gecko": {
+      "id": "fctweak@neynar.com",
+      "strict_min_version": "142.0",
+      "data_collection_permissions": {
+        "required": ["none"]
+      }
+    }
+  },
   "content_scripts": [
     {
       "matches": ["https://farcaster.xyz/*"],
